@@ -9,9 +9,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import RefreshIcon from '@material-ui/icons/Refresh';
-import SortIcon from '@material-ui/icons/Sort';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import RestoreIcon from '@material-ui/icons/Restore';
+import SortIcon from '@material-ui/icons/Sort';
 
 import connectComponent from '../../../helpers/connect-component';
 
@@ -19,6 +20,7 @@ import { fetchLatestTemplateVersionAsync } from '../../../state/general/actions'
 import { getOutdatedAppsAsList } from '../../../state/app-management/utils';
 import { updateAllApps } from '../../../state/app-management/actions';
 import { open as openBackupAppDetailsDialog } from '../../../state/dialog-backup-app-details/actions';
+import { open as openRestoreAppDetailsDialog } from '../../../state/dialog-restore-app-details/actions';
 
 import {
   requestGetInstalledApps,
@@ -64,6 +66,7 @@ const Toolbar = ({
   onFetchLatestTemplateVersionAsync,
   onUpdateAllApps,
   onOpenBackupAppDetailsDialog,
+  onOpenRestoreAppDetailsDialog,
   outdatedAppCount,
   registered,
   sortInstalledAppBy,
@@ -94,16 +97,31 @@ const Toolbar = ({
       )}
     </div>
     <div className={classes.right}>
-      {registered && (appsList.length !== 0) && (
-        <Tooltip title="Back up...">
-          <IconButton
-            size="small"
-            aria-label="Back up..."
-            onClick={onOpenBackupAppDetailsDialog}
-          >
-            <ImportExportIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
+      {registered && (
+        <>
+          {(appsList.length !== 0) && (
+            <Tooltip title="Back up...">
+              <IconButton
+                size="small"
+                aria-label="Back up..."
+                onClick={onOpenBackupAppDetailsDialog}
+              >
+                <ImportExportIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+          {
+            <Tooltip title="Restore apps...">
+              <IconButton
+                size="small"
+                aria-label="Restore apps..."
+                onClick={onOpenRestoreAppDetailsDialog}
+              >
+                <RestoreIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          }
+        </>
       )}
       <Tooltip title="Sort by...">
         <IconButton
@@ -156,6 +174,7 @@ Toolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   fetchingLatestTemplateVersion: PropTypes.bool.isRequired,
   onOpenBackupAppDetailsDialog: PropTypes.func.isRequired,
+  onOpenRestoreAppDetailsDialog: PropTypes.func.isRequired,
   onFetchLatestTemplateVersionAsync: PropTypes.func.isRequired,
   onUpdateAllApps: PropTypes.func.isRequired,
   outdatedAppCount: PropTypes.number.isRequired,
@@ -166,6 +185,7 @@ Toolbar.propTypes = {
 const actionCreators = {
   fetchLatestTemplateVersionAsync,
   openBackupAppDetailsDialog,
+  openRestoreAppDetailsDialog,
   updateAllApps,
 };
 
